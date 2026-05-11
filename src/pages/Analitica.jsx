@@ -8,8 +8,8 @@ export default function Analitica() {
     const cargar = async () => {
       try {
         const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/visitas`
-         );
+       `${import.meta.env.VITE_API_URL}/visitas`
+        );
         const data = await res.json();
         setVisitas(data);
       } catch (error) {
