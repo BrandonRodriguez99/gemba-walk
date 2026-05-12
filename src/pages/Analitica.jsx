@@ -22,8 +22,6 @@ export default function Analitica() {
     cargar();
   }, []);
 
-  console.log("API:", import.meta.env.VITE_API_URL);
-
   const resumen = useMemo(() => {
     const areaCounts = {};
     const clasifCounts = {};

@@ -15,7 +15,9 @@ export default function Dashboard() {
 
   const obtenerDatos = async () => {
     try {
-      const res = await fetch("http://localhost:3001/visitas");
+      const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/visitas`
+      );
       const data = await res.json();
 
       setVisitas(data);
@@ -75,6 +77,8 @@ export default function Dashboard() {
     })))
     .filter(c => c.visitaEstado !== "Cerrado")
     .slice(0, 8);
+
+    console.log(import.meta.env.VITE_API_URL);
 
   return (
     <div className="dashboard-page">
