@@ -1,25 +1,11 @@
 import { useEffect, useState } from "react";
 
 const getNombreCompleto = (c) => {
-  const nombre = c.NombreCompleto
-    ? c.NombreCompleto
-    : [
-        c.Nombre,
-        c.ApellidoPaterno,
-        c.ApellidoMaterno,
-        c.nombre,
-        c.apellidoPaterno,
-        c.apellidoMaterno
-      ]
-        .filter(Boolean)
-        .join(" ");
-
-  return nombre
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toLowerCase();
+  if (c.NombreCompleto) return c.NombreCompleto;
+  return [c.Nombre, c.ApellidoPaterno, c.ApellidoMaterno, c.nombre, c.apellidoPaterno, c.apellidoMaterno]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
 };
 
 const getEmail = (c) => {
@@ -211,34 +197,42 @@ const actualizarCampo = (id, campo, valor) => {
     console.log("Payload enviado:", payload);
 
     try {
-      fetch(`${import.meta.env.VITE_API_URL}/visitas`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
 
-      const text = await response.text();
-      let result;
-      try {
-        result = JSON.parse(text);
-      } catch {
-        result = text;
-      }
-
-      console.log("Respuesta del servidor:", result);
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${text}`);
-      }
-
-      alert("Guardado ✅");
-    } catch (error) {
-      console.error("Error al guardar:", error);
-      alert("Error al guardar la visita");
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/visitas`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     }
-  };
+  );
+
+  const text = await response.text();
+
+  let result;
+
+  try {
+    result = JSON.parse(text);
+  } catch {
+    result = text;
+  }
+
+  console.log("Respuesta del servidor:", result);
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${text}`);
+  }
+
+  alert("Guardado ✅");
+
+} catch (error) {
+
+  console.error("Error al guardar:", error);
+  alert("Error al guardar la visita");
+
+}
 
   return (
     <div className="page-content">
@@ -601,4 +595,5 @@ const actualizarCampo = (id, campo, valor) => {
       </div>
     </div>
   );
+}
 }
