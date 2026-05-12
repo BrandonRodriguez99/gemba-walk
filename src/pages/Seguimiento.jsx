@@ -88,8 +88,8 @@ export default function Seguimiento() {
   useEffect(() => {
     setCargando(true);
     Promise.all([
-      fetch("http://localhost:3001/visitas").then(r => r.json()),
-      fetch("http://localhost:3001/colaboradores").then(r => r.json()).catch(() => [])
+      fetch(`${import.meta.env.VITE_API_URL}/visitas`).then(r => r.json()),
+      fetch(`${import.meta.env.VITE_API_URL}/colaboradores`).then(r => r.json()).catch(() => [])
     ])
       .then(([visitasData, colaboradoresData]) => {
         setVisitas(Array.isArray(visitasData) ? visitasData : []);
@@ -139,7 +139,9 @@ export default function Seguimiento() {
       console.log("Guardando compromisos en BD:", compromisosNormalizados);
 
       // Guardar en SQL Server a través del backend
-      const response = await fetch("http://localhost:3001/compromisos/actualizar", {
+      const response = await fetch(
+  `${import.meta.env.VITE_API_URL}/compromisos/actualizar`,
+  {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

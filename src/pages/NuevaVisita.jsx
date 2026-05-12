@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react";
 
 const getNombreCompleto = (c) => {
-  if (c.NombreCompleto) return c.NombreCompleto;
-  return [c.Nombre, c.ApellidoPaterno, c.ApellidoMaterno, c.nombre, c.apellidoPaterno, c.apellidoMaterno]
-    .filter(Boolean)
-    .join(" ")
-    .trim();
+  const nombre = c.NombreCompleto
+    ? c.NombreCompleto
+    : [
+        c.Nombre,
+        c.ApellidoPaterno,
+        c.ApellidoMaterno,
+        c.nombre,
+        c.apellidoPaterno,
+        c.apellidoMaterno
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+  return nombre
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
 };
 
 const getEmail = (c) => {
@@ -40,13 +54,13 @@ function ComboBuscador({ data, onSelect, value }) {
     setBusqueda(value || "");
   }, [value]);
 
-  const filtrados = busqueda.trim().length > 0
-    ? data.filter(c =>
-        getNombreCompleto(c)
-          .toLowerCase()
-          .includes(busqueda.toLowerCase())
-      )
-    : [];
+ const filtrados = busqueda.trim().length > 0
+  ? data.filter(c =>
+      getNombreCompleto(c)
+        .toLowerCase()
+        .includes(busqueda.toLowerCase())
+    )
+  : [];
 
   return (
     <div style={{ position: "relative" }}>
@@ -63,7 +77,7 @@ function ComboBuscador({ data, onSelect, value }) {
 
       {mostrar && filtrados.length > 0 && (
         <div className="dropdown">
-          {filtrados.slice(0, 8).map((c, i) => (
+          {filtrados.map((c, i) => (
             <div
               key={i}
               className="dropdown-item"
@@ -137,12 +151,11 @@ export default function NuevaVisita() {
 const [compromisos, setCompromisos] = useState([
   { id: 1, texto: "", responsable: "", fecha: "", clasificacion: "Sin clasificar" }
 ]);
-  useEffect(() => {
-    fetch("http://localhost:3001/colaboradores")
-      .then(res => res.json())
-      .then(data => setColaboradores(data));
-  }, []);
-
+    useEffect(() => {
+     fetch(`${import.meta.env.VITE_API_URL}/colaboradores`)
+    .then(res => res.json())
+    .then(data => setColaboradores(data));
+}, []);
   const agregarCompromiso = () => {
   setCompromisos(prev => [
     ...prev,
@@ -198,7 +211,7 @@ const actualizarCampo = (id, campo, valor) => {
     console.log("Payload enviado:", payload);
 
     try {
-      const response = await fetch("http://localhost:3001/visitas", {
+      fetch(`${import.meta.env.VITE_API_URL}/visitas`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

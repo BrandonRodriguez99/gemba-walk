@@ -64,12 +64,7 @@ export default function Login() {
           </button>
 
           <div className="login-footer">
-            <p>Credenciales de ejemplo:</p>
-            <ul>
-              <li>admin / admin123</li>
-              <li>supervisor / sup123</li>
-              <li>inspector / insp123</li>
-            </ul>
+            
           </div>
         </form>
       </div>
