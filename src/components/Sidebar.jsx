@@ -49,6 +49,7 @@ const sidebarStyle = {
   position: "sticky",
   top: 0,
   alignSelf: "flex-start",
+  overflowY: "auto",
   padding: "30px 20px",
   display: "flex",
   flexDirection: "column",

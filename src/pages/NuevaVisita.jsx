@@ -169,6 +169,111 @@ const actualizarCampo = (id, campo, valor) => {
 
   /* GUARDAR */
   const guardar = async () => {
+    let respuestas = [];
+
+if (tipoGemba === "Cascada") {
+
+  respuestas = [
+    {
+      pregunta: "¿Qué actividad estás realizando?",
+      respuesta: cascada.p1 || "",
+      tipoRespuesta: "texto"
+    },
+    {
+      pregunta: "¿Tienes un punto de control definido?",
+      respuesta: cascada.p2 || "",
+      tipoRespuesta: "opcion"
+    },
+    {
+      pregunta: "¿A cuál KPI impacta?",
+      respuesta: cascada.p3 || "",
+      tipoRespuesta: "texto"
+    },
+    {
+      pregunta: "¿Qué mejorarías?",
+      respuesta: cascada.p4 || "",
+      tipoRespuesta: "texto"
+    },
+    {
+      pregunta: "¿Está en tu agenda?",
+      respuesta: cascada.p5 || "",
+      tipoRespuesta: "opcion"
+    },
+    {
+      pregunta: "¿Existe procedimiento?",
+      respuesta: cascada.p6 || "",
+      tipoRespuesta: "opcion"
+    },
+    {
+      pregunta: "Propuesta de mejora",
+      respuesta: cascada.p7 || "",
+      tipoRespuesta: "texto"
+    },
+    {
+      pregunta: "Desperdicios detectados",
+      respuesta: cascada.p8.join(", "),
+      tipoRespuesta: "multiple"
+    }
+  ];
+
+}
+
+if (tipoGemba === "Gerencial") {
+
+  respuestas = [
+    {
+      pregunta: "¿Recibiste la capacitación necesaria antes de iniciar?",
+      respuesta: gerencial.g1 || "",
+      tipoRespuesta: "opcion"
+    },
+    {
+      pregunta: "Notas capacitación",
+      respuesta: gerencial.g1_text || "",
+      tipoRespuesta: "texto"
+    },
+    {
+      pregunta: "¿Has tenido que adaptar actividades fuera del procedimiento?",
+      respuesta: gerencial.g2 || "",
+      tipoRespuesta: "opcion"
+    },
+    {
+      pregunta: "Notas adaptación",
+      respuesta: gerencial.g2_text || "",
+      tipoRespuesta: "texto"
+    },
+    {
+      pregunta: "¿Hay retrasos o malentendidos frecuentes?",
+      respuesta: gerencial.g3 || "",
+      tipoRespuesta: "texto"
+    },
+    {
+      pregunta: "¿Cuentas con lo necesario para trabajar?",
+      respuesta: gerencial.g4 || "",
+      tipoRespuesta: "opcion"
+    },
+    {
+      pregunta: "Notas recursos",
+      respuesta: gerencial.g4_text || "",
+      tipoRespuesta: "texto"
+    },
+    {
+      pregunta: "¿Situaciones inseguras detectadas?",
+      respuesta: gerencial.g5 || "",
+      tipoRespuesta: "opcion"
+    },
+    {
+      pregunta: "Notas seguridad",
+      respuesta: gerencial.g5_text || "",
+      tipoRespuesta: "texto"
+    },
+    {
+      pregunta: "¿Te escuchan cuando propones ideas?",
+      respuesta: gerencial.g6 || "",
+      tipoRespuesta: "opcion"
+    }
+  ];
+
+}
     const compromisosTransformados = compromisos.map(c => ({
       texto: c.texto?.trim() || "",
       Descripcion: c.texto?.trim() || "",
@@ -191,7 +296,8 @@ const actualizarCampo = (id, campo, valor) => {
       cascada: tipoGemba === "Cascada" ? cascada : null,
       gerencial: tipoGemba === "Gerencial" ? gerencial : null,
       Compromisos: compromisosTransformados,
-      compromisos: compromisosTransformados
+      compromisos: compromisosTransformados,
+      respuestas
     };
 
     console.log("Payload enviado:", payload);
