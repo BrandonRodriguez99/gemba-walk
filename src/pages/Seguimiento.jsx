@@ -30,9 +30,6 @@ function ComboBuscador({ data, onSelect, value }) {
   const [busqueda, setBusqueda] = useState("");
   const [mostrar, setMostrar] = useState(false);
 
-  useEffect(() => {
-    setBusqueda(value || "");
-  }, [value]);
 
   const filtrados = busqueda.trim().length > 0
     ? data.filter(c =>
@@ -140,8 +137,8 @@ export default function Seguimiento() {
 
       // Guardar en SQL Server a través del backend
       const response = await fetch(
-  `${import.meta.env.VITE_API_URL}/compromisos/actualizar`,
-  {
+     `${import.meta.env.VITE_API_URL}/compromisos/actualizar`,
+     {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 
 const getNombreCompleto = (c) => {
-  if (c.NombreCompleto) return c.NombreCompleto;
-  return [c.Nombre, c.ApellidoPaterno, c.ApellidoMaterno, c.nombre, c.apellidoPaterno, c.apellidoMaterno]
-    .filter(Boolean)
-    .join(" ")
+  return (
+    c.NombreCompleto ||
+    `${c.Nombre || ""} ${c.ApellidoPaterno || ""} ${c.ApellidoMaterno || ""}`
+  )
+    .replace(/\s+/g, " ")
     .trim();
 };
 
@@ -40,13 +41,11 @@ function ComboBuscador({ data, onSelect, value }) {
     setBusqueda(value || "");
   }, [value]);
 
- const filtrados = busqueda.trim().length > 0
-  ? data.filter(c =>
-      getNombreCompleto(c)
-        .toLowerCase()
-        .includes(busqueda.toLowerCase())
-    )
-  : [];
+const filtrados = data.filter((c) =>
+  getNombreCompleto(c)
+    .toLowerCase()
+    .startsWith(busqueda.trim().toLowerCase())
+);
 
   return (
     <div style={{ position: "relative" }}>
@@ -141,6 +140,7 @@ const [compromisos, setCompromisos] = useState([
      fetch(`${import.meta.env.VITE_API_URL}/colaboradores`)
     .then(res => res.json())
     .then(data => setColaboradores(data));
+    console.log("TOTAL:", colaboradores.length);
 }, []);
   const agregarCompromiso = () => {
   setCompromisos(prev => [
