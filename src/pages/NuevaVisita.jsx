@@ -198,41 +198,43 @@ const actualizarCampo = (id, campo, valor) => {
 
     try {
 
-  const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/visitas`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/visitas`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    const text = await response.text();
+
+    let result;
+
+    try {
+      result = JSON.parse(text);
+    } catch {
+      result = text;
     }
-  );
 
-  const text = await response.text();
+    console.log("Respuesta del servidor:", result);
 
-  let result;
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${text}`);
+    }
 
-  try {
-    result = JSON.parse(text);
-  } catch {
-    result = text;
+    alert("Guardado ✅");
+
+  } catch (error) {
+
+    console.error("Error al guardar:", error);
+    alert("Error al guardar la visita");
+
   }
 
-  console.log("Respuesta del servidor:", result);
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${text}`);
-  }
-
-  alert("Guardado ✅");
-
-} catch (error) {
-
-  console.error("Error al guardar:", error);
-  alert("Error al guardar la visita");
-
-}
+};
 
   return (
     <div className="page-content">
@@ -595,5 +597,4 @@ const actualizarCampo = (id, campo, valor) => {
       </div>
     </div>
   );
-}
 }
