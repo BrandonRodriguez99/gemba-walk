@@ -400,19 +400,18 @@ if (tipoGemba === "Gerencial") {
               }}
             />
 
-            <div className="form-field">
-              <label>Unidad</label>
-              <select
-                className="input"
-                value={form.unidad}
-                onChange={(e) => setForm(p => ({ ...p, unidad: e.target.value }))}
-              >
-                <option value="">Seleccionar unidad</option>
-                {UNIDADES.map((unidad) => (
-                  <option key={unidad} value={unidad}>{unidad}</option>
-                ))}
-              </select>
-            </div>
+            <input
+  className="input"
+  placeholder="Escribe la unidad"
+  value={form.unidad}
+  onChange={(e) =>
+    setForm(p => ({
+      ...p,
+      unidad: e.target.value
+    }))
+  }
+/>
+
 
             <div className="summary-list">
               <p><span>Empleado:</span> {form.empleado}</p>
